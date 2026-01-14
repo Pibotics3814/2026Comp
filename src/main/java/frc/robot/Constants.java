@@ -18,14 +18,6 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   
-   public static final class SwerveDrive {
-    public static final int FRONT_LEFT  = 0;
-    public static final int FRONT_RIGHT = 1;
-    public static final int BACK_LEFT   = 2;
-    public static final int BACK_RIGHT  = 3;
-   }
-  // Motor CAN IDs
-    public static final int[] DRIVE_MOTORS = {1, 2, 3, 4}; // FL, FR, BL, BR
-    public static final int[] ANGLE_MOTORS = {5, 6, 7, 8};
-    public static final int[] CANCODERS    = {9, 10, 11, 12};
-  }
+   //IDS all in JSON files
+}
+    

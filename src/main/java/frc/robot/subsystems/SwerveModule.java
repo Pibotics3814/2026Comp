@@ -6,14 +6,12 @@ import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.RelativeEncoder;
 import com.ctre.phoenix6.hardware.CANcoder;
-// CTRE phoenix6 signals API has changed; configure CANcoder with CANcoderConfiguration directly.
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CANcoderConfigurator;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
-/** A cleaned-up SwerveModule implementation with fixed imports and syntax. */
 public class SwerveModule {
 
     private final SparkMax driveMotor;
@@ -54,9 +52,6 @@ public class SwerveModule {
         driveEncoder = driveMotor.getEncoder();
         steerEncoder = steerMotor.getEncoder();
 
-    // Note: REVLib 2026 uses configuration APIs instead of restoreFactoryDefaults.
-        absoluteEncoder.getConfigurator().apply(new CANcoderConfiguration());
-
         // CANcoder Configuration
         CANcoderConfigurator cfg = absoluteEncoder.getConfigurator();
         cfg.apply(new CANcoderConfiguration());
@@ -65,23 +60,7 @@ public class SwerveModule {
     // Apply magnet sensor configuration (use defaults or set fields on magnetSensorConfiguration as needed)
     cfg.apply(magnetSensorConfiguration);
 
-        // Steering Motor Configuration
-        steerMotor.setInverted(false);
-        // Closed-loop controller configuration should be done via SparkMax config/ClosedLoopSlot.
-        // TODO: configure closed-loop slot PID gains and wrap-around behavior via SparkMax APIs.
-
-        // Drive Motor Configuration
-        driveMotor.setInverted(false);
-        // TODO: configure driving encoder conversion factors and closed-loop PID via SparkMax APIs.
-
-    // Note: persistent configuration should be applied via SparkMax configure APIs if needed.
-
-        driveEncoder.setPosition(0);
-        driveEncoder.setPosition(0);
-        // TODO: read the absolute encoder and set steer encoder position appropriately.
-        steerEncoder.setPosition(0);
     }
-
     /** Get the distance in meters. */
     public double getDistance() {
         return driveEncoder.getPosition();
