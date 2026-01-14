@@ -25,8 +25,6 @@ public class GyroSwerveDrive extends SubsystemBase
     ADIS16470_IMU         gyro; 
     SwerveModule[]        swerveModules;
     
-    // Constructor
-    public GyroSwerveDrive() 
     {
     
         swerveModules = new SwerveModule[4]; // Psuedo-code; Create swerve modules here.
@@ -55,10 +53,14 @@ public class GyroSwerveDrive extends SubsystemBase
             
     }
     
+    public GyroSwerveDrive(ADIS16470_IMU m_gyro) {
+        //TODO Auto-generated constructor stub
+    }
+
     // Simple drive function
     public void drive()
     {
-        // Create test ChassisSpeeds going X = 14in, Y=4in, and spins at 30deg per second.
+        // change to controller driving. 2025 code
         ChassisSpeeds testSpeeds = new ChassisSpeeds(Units.inchesToMeters(14), Units.inchesToMeters(4), Units.degreesToRadians(30));
         
         // Get the SwerveModuleStates for each module given the desired speeds.
@@ -76,7 +78,7 @@ public class GyroSwerveDrive extends SubsystemBase
     {
         return new SwerveModulePosition[]{
             // Using 0.0 for distance (meters) until the SwerveModule API provides a distance getter.
-            // Using Rotation2d() placeholders because SwerveModule#getAngle() is not defined.
+            // Using Rotation2d() placeholders because SwerveModule#getAngle() is not defined yet
             new SwerveModulePosition(0.0, new Rotation2d()), // Front-Left
             new SwerveModulePosition(0.0, new Rotation2d()), // Front-Right
             new SwerveModulePosition(0.0, new Rotation2d()), // Back-Left
@@ -90,5 +92,11 @@ public class GyroSwerveDrive extends SubsystemBase
         // Update the odometry every run.
         odometry.update(Rotation2d.fromDegrees(gyro.getAngle()), getCurrentSwerveModulePositions());
     }
+
+     private double applyDeadzone(double input, double deadzone) {
+    if (Math.abs(input) < deadzone) return 0.0;
+    double result = (Math.abs(input) - deadzone) / (1.0 - deadzone);
+    return (input < 0.0 ? -result : result);
+  }
     
 }

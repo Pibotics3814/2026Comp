@@ -15,7 +15,9 @@ package frc.robot;
  */
 public final class Constants {
   public static class OperatorConstants { // Controller imputs buttons
-    public static final int kDriverControllerPort = 0;
+    public static final int kDriverControllerPort = 3;
+    public static final int kOperatorControllerPort1 = 1;
+    public static final int kOperatorControllerPort2 = 2;
   }
   
    //IDS all in JSON files
