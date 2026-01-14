@@ -3,6 +3,12 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2026.1.1"
 }
 
+// Additional vendor Maven repositories for REV and CTRE
+repositories {
+    maven { url 'https://maven.revrobotics.com/' }
+    maven { url 'https://maven.ctr-electronics.com/release/' }
+}
+
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
@@ -56,6 +62,10 @@ dependencies {
     annotationProcessor wpi.java.deps.wpilibAnnotations()
     implementation wpi.java.deps.wpilib()
     implementation wpi.java.vendor.java()
+
+        // Explicit vendor dependencies to ensure REV and CTRE libraries are available
+        implementation 'com.revrobotics.frc:REVLib-java:2026.0.0'
+        implementation 'com.ctre.phoenix6:wpiapi-java:26.1.0'
 
     roborioDebug wpi.java.deps.wpilibJniDebug(wpi.platforms.roborio)
     roborioDebug wpi.java.vendor.jniDebug(wpi.platforms.roborio)

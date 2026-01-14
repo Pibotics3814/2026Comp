@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -13,7 +14,18 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OperatorConstants {
+  public static class OperatorConstants { // Controller imputs buttons
     public static final int kDriverControllerPort = 0;
   }
-}
+  
+   public static final class SwerveDrive {
+    public static final int FRONT_LEFT  = 0;
+    public static final int FRONT_RIGHT = 1;
+    public static final int BACK_LEFT   = 2;
+    public static final int BACK_RIGHT  = 3;
+   }
+  // Motor CAN IDs
+    public static final int[] DRIVE_MOTORS = {1, 2, 3, 4}; // FL, FR, BL, BR
+    public static final int[] ANGLE_MOTORS = {5, 6, 7, 8};
+    public static final int[] CANCODERS    = {9, 10, 11, 12};
+  }
