@@ -92,11 +92,5 @@ public class GyroSwerveDrive extends SubsystemBase
         // Update the odometry every run.
         odometry.update(Rotation2d.fromDegrees(gyro.getAngle()), getCurrentSwerveModulePositions());
     }
-
-     private double applyDeadzone(double input, double deadzone) {
-    if (Math.abs(input) < deadzone) return 0.0;
-    double result = (Math.abs(input) - deadzone) / (1.0 - deadzone);
-    return (input < 0.0 ? -result : result);
-  }
     
 }

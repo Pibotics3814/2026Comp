@@ -41,4 +41,10 @@ public class GyroSwerveDriveCommand extends SubsystemBase
         swerveModules[2].setState(swerveModuleStates[2]);
         swerveModules[3].setState(swerveModuleStates[3]);
     }
+
+        private double applyDeadzone(double input, double deadzone) {
+    if (Math.abs(input) < deadzone) return 0.0;
+    double result = (Math.abs(input) - deadzone) / (1.0 - deadzone);
+    return (input < 0.0 ? -result : result);
+    }
 }
