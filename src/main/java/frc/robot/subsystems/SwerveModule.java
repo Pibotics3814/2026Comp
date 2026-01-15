@@ -5,6 +5,7 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.RelativeEncoder;
+import swervelib.parser.PIDFConfig;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CANcoderConfigurator;
@@ -23,22 +24,9 @@ public class SwerveModule {
     private final RelativeEncoder driveEncoder;
     private final RelativeEncoder steerEncoder;
 
-    // Small local ModuleConstants to allow compilation
-    private static final class ModuleConstants {
-        static final double kTurningEncoderPositionFactor = 1.0;
-        static final double kTurningEncoderVelocityFactor = 1.0;
-        static final double kTurningP = 1.0;
-        static final double kTurningI = 0.0;
-        static final double kTurningD = 0.0;
-        static final double kTurningFF = 0.0;
-        static final double kDrivingEncoderPositionFactor = 1.0;
-        static final double kDrivingEncoderVelocityFactor = 1.0;
-        static final double kDrivingP = 1.0;
-        static final double kDrivingI = 0.0;
-        static final double kDrivingD = 0.0;
-        static final double kDrivingFF = 0.0;
-    }
+   // PID in PIDF properties in json per YAGSL
 
+    
     public SwerveModule(int driveMotorCANID, int steerMotorCANID, int cancoderCANID) {
     driveMotor = new SparkMax(driveMotorCANID, SparkLowLevel.MotorType.kBrushless);
     steerMotor = new SparkMax(steerMotorCANID, SparkLowLevel.MotorType.kBrushless);
@@ -71,7 +59,30 @@ public class SwerveModule {
     public Rotation2d getAngle() {
         return Rotation2d.fromDegrees(steerEncoder.getPosition());
     }
+    public SparkClosedLoopController getDrivingPIDController() {
+        return drivingPIDController;
+    }
 
+    public SparkClosedLoopController getTurningPIDController() {
+        return turningPIDController;
+    }
+
+    /**
+     * Apply PIDF tuning values from YAGSL's PIDFConfig to the internal SparkMax controllers.
+     * This maps the PIDFConfig fields into REV ClosedLoop and FeedForward configs and applies
+     * them to the device, persisting the parameters. Values used here are placeholders and may
+     * need unit conversion depending on your encoder conversion factors.
+     *
+     * @param drivePID PIDF config for the drive (velocity) controller
+     * @param anglePID PIDF config for the angle (position) controller
+     */
+    public void applyYagslPidf(PIDFConfig drivePID, PIDFConfig anglePID) {
+        // slot 0 by default; adjust if you use different slots
+        frc.robot.YagslSparkTuner.applyPIDFToSpark(driveMotor, drivePID, com.revrobotics.spark.ClosedLoopSlot.kSlot0);
+        frc.robot.YagslSparkTuner.applyPIDFToSpark(steerMotor, anglePID, com.revrobotics.spark.ClosedLoopSlot.kSlot0);
+    }
+
+    /** Get the distance in meters. */
     /** Set the swerve module state. */
     public void setState(SwerveModuleState state) {
         // Set closed-loop setpoints. Units and control types must match configured ClosedLoopSlot.

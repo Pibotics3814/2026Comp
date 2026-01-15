@@ -29,7 +29,7 @@ public class GyroSwerveDriveCommand extends SubsystemBase
     // Simple drive function
     public void drive()
     {
-        // Create test ChassisSpeeds going X = 14in, Y=4in, and spins at 30deg per second.
+        // change to using drive controller inputs
         ChassisSpeeds testSpeeds = new ChassisSpeeds(Units.inchesToMeters(14), Units.inchesToMeters(4), Units.degreesToRadians(30));
         
         // Get the SwerveModuleStates for each module given the desired speeds.
