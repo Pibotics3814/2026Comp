@@ -34,7 +34,7 @@ public final class YagslSparkTuner {
       // Apply PID gains for the chosen slot
       cfg.closedLoop.pid(pid.p, pid.i, pid.d, slot);
 
-      // Map YAGSL f -> REV kV (volts per velocity) as a placeholder. Adjust if you have a
+      // Map YAGSL f -> REV kV (volts per velocity) as a placeholder. Adjust we get a
       // better mapping between units (RPM vs meters/sec etc.).
       cfg.closedLoop.feedForward.kV(pid.f, slot);
 

@@ -6,6 +6,11 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.GyroSwerveDrive;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import swervelib.SwerveInputStream;
+import swervelib.simulation.ironmaple.simulation.drivesims.GyroSimulation;
+
+import java.io.File;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -13,11 +18,13 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,13 +35,26 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
-  public final GyroSwerveDrive m_swerveDrive = new GyroSwerveDrive(m_gyro);
+  
+  private final SwerveSubsystem drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+                                                                                "deploy"));
 
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
  XboxController driveController = new XboxController(OperatorConstants.kDriverControllerPort);
  CommandGenericHID ButtonBoard1 = new CommandGenericHID(OperatorConstants.kOperatorControllerPort1);
  CommandGenericHID ButtonBoard2 = new CommandGenericHID(OperatorConstants.kOperatorControllerPort2);
+ 
+ SwerveInputStream driveDirectAngle = SwerveInputStream.of(drivebase.getSwerveDrive(),
+                                                            () -> driveController.getLeftY() * -1,
+                                                            () -> driveController.getLeftX() * -1)
+                                                        .withControllerRotationAxis(driveController::getRightX)
+                                                        .deadband(OperatorConstants.DEADBAND)
+                                                        .scaleTranslation(0.8)
+                                                        .allianceRelativeControl(true)
+                                                        .withControllerHeadingAxis(driveController::getRightX,
+                                                                                             driveController::getRightY)
+                                                           .headingWhile(true);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -47,8 +67,6 @@ public class RobotContainer {
 
     configureBindings();// no buttons here they go later
   }
-
-
  
   
   /**
@@ -60,6 +78,9 @@ public class RobotContainer {
    */
 
  private void configureBindings() {
+    Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
+    drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
 
   }
 }
+

@@ -18,6 +18,7 @@ public final class Constants {
     public static final int kDriverControllerPort = 3;
     public static final int kOperatorControllerPort1 = 1;
     public static final int kOperatorControllerPort2 = 2;
+    public static final double DEADBAND = 0.1;
   }
     public static class ModuleConstants{
     public static final double kWheelDiameterMeters = 0.1016; // 4 inches in meters
@@ -36,6 +37,7 @@ public final class Constants {
     public static final double kDriveD = 0.0; // Example D value
     public static final double kDriveFF = 0.0; // Example Feedforward value
     }
+    public static final double MAX_SPEED = 0;
   
    //IDS all in JSON files
 }
