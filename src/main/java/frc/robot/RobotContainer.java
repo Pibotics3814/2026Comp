@@ -5,7 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.GyroSwerveDrive;
+//import frc.robot.subsystems.GyroSwerveDrive;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 import swervelib.simulation.ironmaple.simulation.drivesims.GyroSimulation;
