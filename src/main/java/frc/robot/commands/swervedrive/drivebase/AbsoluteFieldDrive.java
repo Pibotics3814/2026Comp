@@ -39,6 +39,8 @@ public class AbsoluteFieldDrive extends Command
    *                station glass.
    * @param heading DoubleSupplier that supplies the robot's heading angle.
    */
+
+   // calls information from gyro and joystick to drive robot in field centric mode (see above)
   public AbsoluteFieldDrive(SwerveSubsystem swerve, DoubleSupplier vX, DoubleSupplier vY,
                             DoubleSupplier heading)
   {
@@ -66,6 +68,7 @@ public class AbsoluteFieldDrive extends Command
                                                          new Rotation2d(heading.getAsDouble() * Math.PI));
 
     // Limit velocity to prevent tippy
+    //not needed? Need to test to see if this is useful or limits speed
     Translation2d translation = SwerveController.getTranslation2d(desiredSpeeds);
     translation = SwerveMath.limitVelocity(translation, swerve.getFieldVelocity(), swerve.getPose(),
                                            Constants.LOOP_TIME, Constants.ROBOT_MASS, List.of(Constants.CHASSIS),

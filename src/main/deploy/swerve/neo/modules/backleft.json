@@ -4,7 +4,7 @@
     "id": 7,
     "canbus": null
   },
-  "angle": {
+  "angle": { 
     "type": "sparkmax",
     "id": 8,
     "canbus": null

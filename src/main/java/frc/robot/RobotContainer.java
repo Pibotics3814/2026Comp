@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 
@@ -36,15 +37,17 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
   
-  private final SwerveSubsystem drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                                "deploy"));
+  //calls all the JSON files for swervesubsystem
+  private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+                                                                                "swerve/neo"));
 
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
  XboxController driveController = new XboxController(OperatorConstants.kDriverControllerPort);
  CommandGenericHID ButtonBoard1 = new CommandGenericHID(OperatorConstants.kOperatorControllerPort1);
  CommandGenericHID ButtonBoard2 = new CommandGenericHID(OperatorConstants.kOperatorControllerPort2);
- 
+
+ //Gets controller imputs and gives valiues to drive system
  SwerveInputStream driveDirectAngle = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                             () -> driveController.getLeftY() * -1,
                                                             () -> driveController.getLeftX() * -1)
@@ -59,8 +62,9 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
+    // Setup Data Logging
    DriverStation.startDataLog(DataLogManager.getLog());
-    SignalLogger.setPath("/media/ATKINS/");
+    SignalLogger.setPath("/media/PiBotics_Logging/");
 
     DataLogManager.start();
     SignalLogger.start();
@@ -77,9 +81,12 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Joysticks}.
    */
 
- private void configureBindings() {
+ private void configureBindings() { //button mappings go here
     Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
     drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
+
+/*     new JoystickButton(driveController, XboxController.Button.kA.value)
+        .whileTrue(drivebase.zeroGyroCommand()); EXAMPLE BUTTON MAPPING */ 
 
   }
 }
