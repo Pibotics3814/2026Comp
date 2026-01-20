@@ -35,17 +35,7 @@ public final class Constants {
     public static final double kDriveEncoderVelocityFactor = kDriveEncoderPositionFactor / 60.0; // meters per second per RPM
     public static final double kSteerEncoderPositionFactor = 360.0 / kSteerMotorGearRatio; // degrees per motor rotation
     public static final double kSteerEncoderVelocityFactor = kSteerEncoderPositionFactor / 60.0; // degrees per second per RPM
-
-    // PID Values (This might be in JSON files)
-    public static final double kSteerP = 0.5; // Example P value
-    public static final double kSteerI = 0.0; // Example I value
-    public static final double kSteerD = 0.0; // Example D value
-    public static final double kSteerFF = 0.0; // Example Feedforward value
-    public static final double kDriveP = 0.1; // Example P value
-    public static final double kDriveI = 0.0; // Example I value
-    public static final double kDriveD = 0.0; // Example D value
-    public static final double kDriveFF = 0.0; // Example Feedforward value
-    }
+    } 
 
     // Robot physical constants
     public static final double MAX_SPEED = 0; // meters per second
@@ -56,5 +46,5 @@ public final class Constants {
     public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
    
   
-   //IDS all in JSON files
+   //PID and CAN IDs all in JSON files
 }
